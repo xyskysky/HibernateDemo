@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+
+<hibernate-mapping package="com.jwn.hibernate.entities">
+
+    <class name="Worker" table="H_WORKERS">
+        <id name="id" type="java.lang.Integer">
+            <column name="ID" />
+            <generator class="native" />
+        </id>
+        <property name="name" type="java.lang.String">
+            <column name="NAME" />
+        </property>
+        <property name="image" column="Image" type="blob"></property>
+        <!-- 映射组成关系 -->
+        
+        <component name="pay" class="Pay">
+          <parent name="worker"/>
+          <!-- 指定组成关系的属性 -->
+          <property name="yearPay" column="Year_Pay"></property>
+          <property name="monthlyPay" column="Monthly_Pay"></property>
+          <property name="vocationWithPay" column="Vocation_With_Pay"></property>
+        </component>
+    </class>
+    
+</hibernate-mapping>

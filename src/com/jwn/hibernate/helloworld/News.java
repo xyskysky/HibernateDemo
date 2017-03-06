@@ -19,6 +19,8 @@ public class News
 	private Blob picture;
 	
 	private Date date;
+	
+	
 
 	public Integer getId()
 	{

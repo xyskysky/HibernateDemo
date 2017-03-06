@@ -13,6 +13,23 @@
        <property name="show_sql">true</property>
        <property name="format_sql">true</property>
        <property name="hbm2ddl.auto">update</property>
+       <!-- 映射文件 -->
        <mapping resource="com/jwn/hibernate/helloworld/News.hbm.xml"/>
+       <mapping resource="com/jwn/hibernate/entities/Worker.hbm.xml"/>
+       <mapping resource="com/jwn/hibernate/entities/n21/Order.hbm.xml"/>
+       <mapping resource="com/jwn/hibernate/entities/n21/Customer.hbm.xml"/>
+       
+       <mapping resource="com/jwn/hibernate/entities/n21/both/Order.hbm.xml"/>
+       <mapping resource="com/jwn/hibernate/entities/n21/both/Customer.hbm.xml"/>
+       
+       <mapping resource="com/jwn/hibernate/one2one/foreign/Manager.hbm.xml"/>
+       <mapping resource="com/jwn/hibernate/one2one/foreign/Department.hbm.xml"/>
+       
+       <mapping resource="com/jwn/hibernate/one2one/primary/Department.hbm.xml"/>
+       <mapping resource="com/jwn/hibernate/one2one/primary/Manager.hbm.xml"/>
+       
+       <mapping resource="com/jwn/hibernate/n2n/Category.hbm.xml"/>
+       <mapping resource="com/jwn/hibernate/n2n/Item.hbm.xml"/>
+       
     </session-factory>
 </hibernate-configuration>

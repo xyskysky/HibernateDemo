@@ -20,11 +20,12 @@ public class HelloworldTest
 		
 		
         ServiceRegistry serviceRegistry=new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();
-		SessionFactory sessionFactory=configuration.buildSessionFactory(serviceRegistry);
-		
+		SessionFactory sessionFactory=configuration.buildSessionFactory();
 		
 		
 		Session session=sessionFactory.openSession();
+		
+		configuration.buildSessionFactory(serviceRegistry);
 		
 		News news=new News("java", "уехЩ", new Date());
 		
