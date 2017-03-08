@@ -31,5 +31,17 @@
        <mapping resource="com/jwn/hibernate/n2n/Category.hbm.xml"/>
        <mapping resource="com/jwn/hibernate/n2n/Item.hbm.xml"/>
        
+       <mapping resource="com/jwn/hibernate/subclass/Person.hbm.xml"/>
+       
+       <mapping resource="com/jwn/hibernate/joined/subclass/Person.hbm.xml"/>
+       <!--  
+       <mapping resource="com/jwn/hibernate/union/subclass/Person.hbm.xml"/>
+       -->
+       <mapping resource="com/jwn/hibernate/strategy/Customer.hbm.xml"/>
+       <mapping resource="com/jwn/hibernate/strategy/Order.hbm.xml"/>
+       
+       <mapping resource="com/jwn/hibernate/hibernate/entities/Department.hbm.xml"/>
+       <mapping resource="com/jwn/hibernate/hibernate/entities/Employee.hbm.xml"/>
+       
     </session-factory>
 </hibernate-configuration>
