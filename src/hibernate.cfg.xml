@@ -3,45 +3,73 @@
 		"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
 		"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
-    <session-factory>
-       <property name="connection.username">root</property>
-       <property name="connection.password">123456</property>
-       <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
-       <property name="connection.url">jdbc:mysql://localhost:3306/hibernate</property>
-       
-       <property name="dialect">org.hibernate.dialect.MySQL5InnoDBDialect</property>
-       <property name="show_sql">true</property>
-       <property name="format_sql">true</property>
-       <property name="hbm2ddl.auto">update</property>
-       <!-- 映射文件 -->
-       <mapping resource="com/jwn/hibernate/helloworld/News.hbm.xml"/>
-       <mapping resource="com/jwn/hibernate/entities/Worker.hbm.xml"/>
-       <mapping resource="com/jwn/hibernate/entities/n21/Order.hbm.xml"/>
-       <mapping resource="com/jwn/hibernate/entities/n21/Customer.hbm.xml"/>
-       
-       <mapping resource="com/jwn/hibernate/entities/n21/both/Order.hbm.xml"/>
-       <mapping resource="com/jwn/hibernate/entities/n21/both/Customer.hbm.xml"/>
-       
-       <mapping resource="com/jwn/hibernate/one2one/foreign/Manager.hbm.xml"/>
-       <mapping resource="com/jwn/hibernate/one2one/foreign/Department.hbm.xml"/>
-       
-       <mapping resource="com/jwn/hibernate/one2one/primary/Department.hbm.xml"/>
-       <mapping resource="com/jwn/hibernate/one2one/primary/Manager.hbm.xml"/>
-       
-       <mapping resource="com/jwn/hibernate/n2n/Category.hbm.xml"/>
-       <mapping resource="com/jwn/hibernate/n2n/Item.hbm.xml"/>
-       
-       <mapping resource="com/jwn/hibernate/subclass/Person.hbm.xml"/>
-       
-       <mapping resource="com/jwn/hibernate/joined/subclass/Person.hbm.xml"/>
-       <!--  
-       <mapping resource="com/jwn/hibernate/union/subclass/Person.hbm.xml"/>
-       -->
-       <mapping resource="com/jwn/hibernate/strategy/Customer.hbm.xml"/>
-       <mapping resource="com/jwn/hibernate/strategy/Order.hbm.xml"/>
-       
-       <mapping resource="com/jwn/hibernate/hibernate/entities/Department.hbm.xml"/>
-       <mapping resource="com/jwn/hibernate/hibernate/entities/Employee.hbm.xml"/>
-       
-    </session-factory>
+	<session-factory>
+		<property name="connection.username">root</property>
+		<property name="connection.password">123456</property>
+		<property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+		<property name="connection.url">jdbc:mysql://localhost:3306/hibernate</property>
+
+		<property name="dialect">org.hibernate.dialect.MySQL5InnoDBDialect</property>
+		<property name="show_sql">true</property>
+		<property name="format_sql">true</property>
+		<property name="hbm2ddl.auto">update</property>
+		<!-- 设置Hibernate的事务隔离级别 2  read-writer -->
+		<property name="connection.isolation">2</property>
+		<!-- 删除对象后, 使其 OID 置为 null -->
+		<property name="use_identifier_rollback">true</property>
+		
+	    <!-- 设定 JDBC 的 Statement 读取数据的时候每次从数据库中取出的记录条数 -->
+    	<property name="hibernate.jdbc.fetch_size">100</property>
+    	
+    	<!-- 设定对数据库进行批量删除，批量更新和批量插入的时候的批次大小 -->
+    	<property name="jdbc.batch_size">30</property>
+    	
+    	
+		<!-- 启用二级缓存 -->
+		<property name="cache.use_second_level_cache">true</property>
+		<!-- 启用查询缓存 -->
+		<property name="cache.use_query_cache">true</property>
+		<!-- 配置使用的二级缓存的产品 -->
+		<property name="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.EhCacheRegionFactory</property>
+
+		<!-- 配置管理 Session 的方式 -->
+		<property name="hibernate.current_session_context_class">thread</property>
+
+		<!-- 映射文件 -->
+		<mapping resource="com/jwn/hibernate/helloworld/News.hbm.xml" />
+		<mapping resource="com/jwn/hibernate/entities/Worker.hbm.xml" />
+		<mapping resource="com/jwn/hibernate/entities/n21/Order.hbm.xml" />
+		<mapping resource="com/jwn/hibernate/entities/n21/Customer.hbm.xml" />
+
+		<mapping resource="com/jwn/hibernate/entities/n21/both/Order.hbm.xml" />
+		<mapping resource="com/jwn/hibernate/entities/n21/both/Customer.hbm.xml" />
+
+		<mapping resource="com/jwn/hibernate/one2one/foreign/Manager.hbm.xml" />
+		<mapping resource="com/jwn/hibernate/one2one/foreign/Department.hbm.xml" />
+
+		<mapping resource="com/jwn/hibernate/one2one/primary/Department.hbm.xml" />
+		<mapping resource="com/jwn/hibernate/one2one/primary/Manager.hbm.xml" />
+
+		<mapping resource="com/jwn/hibernate/n2n/Category.hbm.xml" />
+		<mapping resource="com/jwn/hibernate/n2n/Item.hbm.xml" />
+
+		<mapping resource="com/jwn/hibernate/subclass/Person.hbm.xml" />
+
+		<mapping resource="com/jwn/hibernate/joined/subclass/Person.hbm.xml" />
+		<!-- <mapping resource="com/jwn/hibernate/union/subclass/Person.hbm.xml"/> -->
+		<mapping resource="com/jwn/hibernate/strategy/Customer.hbm.xml" />
+		<mapping resource="com/jwn/hibernate/strategy/Order.hbm.xml" />
+
+		<mapping resource="com/jwn/hibernate/hibernate/entities/Department.hbm.xml" />
+		<mapping resource="com/jwn/hibernate/hibernate/entities/Employee.hbm.xml" />
+
+		<!-- 配置启用二级缓存的类 -->
+		<class-cache usage="read-write"
+			class="com.jwn.hibernate.hibernate.entities.Employee" />
+		<class-cache usage="read-write"
+			class="com.jwn.hibernate.hibernate.entities.Department" />
+		<!-- 对象中集合缓存 -->
+		<collection-cache usage="read-write"
+			collection="com.jwn.hibernate.hibernate.entities.Department.emps" />
+	</session-factory>
 </hibernate-configuration>

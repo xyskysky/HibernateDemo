@@ -1,10 +1,8 @@
 package com.jwn.hibernate.hibernate.test;
 
-import static org.junit.Assert.*;
-
-import java.util.ArrayList;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 
@@ -14,20 +12,19 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.criterion.Conjunction;
-import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Disjunction;
-import org.hibernate.criterion.MatchMode;
-import org.hibernate.criterion.Projection;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.jdbc.Work;
 import org.hibernate.query.Query;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.jwn.hibernate.hibernate.dao.DepartmentDAO;
 import com.jwn.hibernate.hibernate.entities.Department;
 import com.jwn.hibernate.hibernate.entities.Employee;
-import com.mchange.util.impl.CircularList;
+import com.jwn.hibernate.hibernate.utils.HibernateUtils;
 
 public class HibernateTest
 {
@@ -49,6 +46,103 @@ public class HibernateTest
 		transaction.commit();
 		session.close();
 		sessionfactory.close();
+	}
+	@Test
+	public void testDoWork()
+	{
+		session.doWork(new Work()
+		{
+			
+			@Override
+			public void execute(Connection arg0) throws SQLException
+			{
+				System.out.println("========================");
+			}
+		});
+	}
+	@Test
+	public void testManageSession()
+	{
+		Session session2=HibernateUtils.getInstance().getSession();
+		System.out.println("-->" + session2.hashCode());
+		Transaction transaction2=session2.beginTransaction();
+		
+		Department department=new Department();
+		department.setName("Õı–„≤ø√≈");
+		
+		DepartmentDAO dao=new DepartmentDAO();
+		dao.save(department);
+		dao.save(department);
+		dao.save(department);
+		dao.save(department);
+		transaction2.commit();
+		System.out.println(session2.isOpen());
+	}
+	@Test
+	public void testUpdateTimeStampCache(){
+		Query query = session.createQuery("FROM Employee");
+		query.setCacheable(true);
+		
+		List<Employee> emps = query.list();
+		System.out.println(emps.size());
+		
+		Employee employee = (Employee) session.get(Employee.class, 100);
+		employee.setSalary(5566);
+		
+		emps = query.list();
+		System.out.println(emps.size());
+	}
+	
+	@Test
+	public void testQueryCache()
+	{
+		Query query = session.createQuery("from Employee");
+		query.setCacheable(true);
+		List<Employee> emps = query.list();
+		System.out.println(emps.size());
+		
+		emps=query.list();
+		System.out.println(emps.size());
+		
+		Criteria createCriteria = session.createCriteria(Employee.class);
+		createCriteria.setCacheable(true);
+		
+		emps=createCriteria.list();
+		System.out.println(emps.size());
+		
+		emps=createCriteria.list();
+		System.out.println(emps.size());
+		
+	}
+	@Test
+	public void testCollectionSecondLevelCache()
+	{
+	
+		Department department=session.get(Department.class, 2);
+		System.out.println(department);
+		System.out.println(department.getEmps().size());
+		transaction.commit();
+		session.close();
+		session=sessionfactory.openSession();
+		transaction=session.beginTransaction();
+		
+		Department department1=session.get(Department.class, 2);
+		System.out.println(department1);
+		System.out.println(department1.getEmps().size());
+	}
+	@Test
+	public void testHibernateSecondLevelCache()
+	{
+		Employee employee=session.get(Employee.class, 100);
+		System.out.println(employee);
+		
+		transaction.commit();
+		session.close();
+		session=sessionfactory.openSession();
+		transaction=session.beginTransaction();
+		
+		Employee employee1=session.get(Employee.class, 100);
+		System.out.println(employee1);
 	}
 	@Test
 	public void testInnerJoin()
